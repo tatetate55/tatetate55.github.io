@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ワイプカメラ – 編集なしでテレビ風ワイプ撮影</title>
+  <meta name="description" content="インカメラとアウトカメラを同時撮影。編集不要でテレビのワイプのような動画がすぐ作れる。" />
+  <meta property="og:title" content="ワイプカメラ – 編集なしでテレビ風ワイプ撮影" />
+  <meta property="og:description" content="前面・背面カメラ同時撮影。動画編集ソフト不要でワイプ映像が完成。" />
+  <meta property="og:type" content="website" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #080c10;
+      --surface: #0e1318;
+      --card:    #131a22;
+      --border:  rgba(255,255,255,0.07);
+      --teal:    #00d4c8;
+      --teal2:   #00a8a0;
+      --blue:    #3b8beb;
+      --red:     #ff3b3b;
+      --text:    #eef2f5;
+      --muted:   #7a8a9a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 62px;
+      background: rgba(8,12,16,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 16px; font-weight: 700; color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      color: #fff; font-size: 14px; font-weight: 700;
+      padding: 9px 22px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,212,200,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,212,200,0.45); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 110px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+
+    /* シネマ風背景グラデ */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -5%, rgba(0,212,200,0.2), transparent),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(59,139,235,0.12), transparent),
+        radial-gradient(ellipse 40% 30% at 90% 70%, rgba(0,212,200,0.08), transparent);
+      pointer-events: none;
+    }
+
+    /* スキャンライン演出 */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,212,200,0.015) 2px, rgba(0,212,200,0.015) 4px
+      );
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,212,200,0.1);
+      border: 1px solid rgba(0,212,200,0.3);
+      color: var(--teal); font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 6px 18px; border-radius: 50px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 em {
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-style: normal;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 44px;
+      max-width: 520px;
+    }
+
+    /* ワイプ画面イラスト */
+    .wipe-demo {
+      position: relative;
+      width: min(340px, 85vw);
+      aspect-ratio: 9/16;
+      background: #0a0f14;
+      border-radius: 24px;
+      border: 2px solid rgba(0,212,200,0.25);
+      margin: 0 auto 44px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,212,200,0.1);
+    }
+
+    /* メインカメラ（背面） */
+    .cam-main {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #0d1b2e 0%, #1a2a3a 40%, #0f2030 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .cam-main-icon { font-size: 4rem; opacity: 0.2; }
+
+    .cam-label-main {
+      position: absolute; top: 14px; left: 14px;
+      font-size: 11px; font-weight: 700; color: var(--teal);
+      background: rgba(0,212,200,0.15);
+      border: 1px solid rgba(0,212,200,0.3);
+      padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* ワイプ（前面カメラ） */
+    .cam-wipe {
+      position: absolute; bottom: 70px; right: 14px;
+      width: 30%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1a0d2e, #2a1a3a);
+      border-radius: 10px;
+      border: 2px solid rgba(0,212,200,0.5);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .cam-wipe-icon { font-size: 1.5rem; opacity: 0.4; }
+
+    /* 録画ボタン */
+    .rec-btn {
+      position: absolute; bottom: 18px; left: 50%;
+      transform: translateX(-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 4px rgba(255,59,59,0.3), 0 0 0 8px rgba(255,59,59,0.1);
+      animation: rec-pulse 2s ease-in-out infinite;
+    }
+    @keyframes rec-pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(255,59,59,0.3), 0 0 0 8px rgba(255,59,59,0.1); }
+      50%       { box-shadow: 0 0 0 6px rgba(255,59,59,0.4), 0 0 0 14px rgba(255,59,59,0.05); }
+    }
+
+    /* 録画中バッジ */
+    .rec-badge {
+      position: absolute; top: 14px; right: 14px;
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 20px; padding: 4px 10px;
+      font-size: 11px; font-weight: 700; color: #fff;
+    }
+    .rec-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--red);
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      color: #fff; font-size: 16px; font-weight: 800;
+      padding: 17px 38px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 28px rgba(0,212,200,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,212,200,0.5); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--muted); font-size: 15px; font-weight: 600;
+      padding: 16px 28px; border-radius: 50px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex; max-width: 680px;
+      margin: 70px auto 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--card);
+      overflow: hidden;
+    }
+
+    .stat {
+      flex: 1; padding: 26px 16px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-size: 1.8rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* ── SECTION ── */
+    section { padding: 100px 5%; }
+
+    .section-tag {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      color: var(--teal); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      line-height: 1.2; margin-bottom: 16px;
+    }
+
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 480px; }
+
+    /* ── 特徴カード ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px; margin-top: 56px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 30px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      border-color: rgba(0,212,200,0.35);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,212,200,0.15), rgba(59,139,235,0.15));
+      border: 1px solid rgba(0,212,200,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 18px;
+    }
+
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p  { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── WIPE SHOWCASE ── */
+    .showcase {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center; padding: 100px 5%;
+    }
+
+    .wipe-diagram {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; flex-wrap: wrap;
+      margin-top: 56px;
+    }
+
+    .cam-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px;
+      text-align: center; flex: 1; min-width: 160px; max-width: 220px;
+    }
+
+    .cam-box-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .cam-box h4   { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .cam-box p    { font-size: 0.82rem; color: var(--muted); }
+
+    .arrow {
+      font-size: 2rem; color: var(--teal); opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .result-box {
+      background: linear-gradient(135deg, rgba(0,212,200,0.1), rgba(59,139,235,0.1));
+      border: 1px solid rgba(0,212,200,0.3);
+      border-radius: 20px; padding: 28px;
+      text-align: center; flex: 1; min-width: 160px; max-width: 220px;
+    }
+
+    .result-box-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .result-box h4   { font-size: 0.95rem; font-weight: 700; color: var(--teal); margin-bottom: 6px; }
+    .result-box p    { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── 機能バッジリスト ── */
+    .badge-list {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 44px;
+    }
+
+    .badge-item {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50px; padding: 10px 20px;
+      font-size: 14px; font-weight: 600;
+    }
+
+    .badge-item .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      flex-shrink: 0;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center; padding: 100px 5%;
+      position: relative; overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 50% 120%, rgba(0,212,200,0.18), transparent);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .cta-section h2 em {
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-style: normal;
+    }
+
+    .cta-section p { color: var(--muted); font-size: 1rem; max-width: 420px; margin: 0 auto 40px; }
+
+    .appstore-btn { display: inline-block; transition: transform 0.2s, opacity 0.2s; }
+    .appstore-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .appstore-btn img { height: 54px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-copy { font-size: 13px; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 13px; color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+
+    @media (max-width: 600px) {
+      .wipe-diagram .arrow { transform: rotate(90deg); }
+      footer { justify-content: center; text-align: center; }
+      .badge-list { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-icon">📹</div>
+    ワイプカメラ
+  </a>
+  <a class="nav-cta" href="https://apps.apple.com/jp/app/%E3%83%AF%E3%82%A4%E3%83%97%E3%82%AB%E3%83%A1%E3%83%A9-%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E7%84%A1%E3%81%97%E3%81%A7%E3%83%AF%E3%82%A4%E3%83%97%E6%92%AE%E5%BD%B1/id1479329270" target="_blank" rel="noopener">
+    無料でダウンロード
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🎬 テレビのワイプ、iPhoneで撮れる</div>
+
+  <h1>編集ゼロで<br><em>ワイプ動画</em>が完成。</h1>
+  <p class="hero-tagline">
+    前面・背面カメラを同時録画。<br>
+    動画編集ソフト不要でテレビ番組みたいな映像がすぐできる。
+  </p>
+
+  <!-- ワイプ画面デモ -->
+  <div class="wipe-demo">
+    <div class="cam-main">
+      <div class="cam-main-icon">🏙️</div>
+    </div>
+    <div class="cam-label-main">背面カメラ（メイン）</div>
+    <div class="rec-badge">
+      <div class="rec-dot"></div>
+      REC
+    </div>
+    <div class="cam-wipe">
+      <div class="cam-wipe-icon">😊</div>
+    </div>
+    <div class="rec-btn"></div>
+  </div>
+
+  <div class="hero-actions">
+    <a class="btn-primary" href="https://apps.apple.com/jp/app/%E3%83%AF%E3%82%A4%E3%83%97%E3%82%AB%E3%83%A1%E3%83%A9-%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E7%84%A1%E3%81%97%E3%81%A7%E3%83%AF%E3%82%A4%E3%83%97%E6%92%AE%E5%BD%B1/id1479329270" target="_blank" rel="noopener">
+      🍎 App Store で無料DL
+    </a>
+    <a class="btn-outline" href="#features">機能を見る ↓</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">2台</div>
+      <div class="stat-label">同時録画カメラ数</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4か所</div>
+      <div class="stat-label">ワイプ配置パターン</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0秒</div>
+      <div class="stat-label">必要な編集時間</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">無料</div>
+      <div class="stat-label">ダウンロード</div>
+    </div>
+  </div>
+</section>
+
+<!-- WIPE SHOWCASE -->
+<div class="showcase" id="features">
+  <div class="section-tag">How it works</div>
+  <div class="section-title">撮るだけでワイプ映像が<br>できあがる。</div>
+  <p class="section-sub" style="margin: 0 auto">
+    2つのカメラ映像をリアルタイムで合成。録画が終わった瞬間に完成動画がカメラロールへ。
+  </p>
+
+  <div class="wipe-diagram">
+    <div class="cam-box">
+      <div class="cam-box-icon">🔭</div>
+      <h4>背面カメラ</h4>
+      <p>メインの映像。風景・被写体を大きく映す</p>
+    </div>
+    <div class="arrow">+</div>
+    <div class="cam-box">
+      <div class="cam-box-icon">🤳</div>
+      <h4>前面カメラ</h4>
+      <p>ワイプの映像。自分の反応を隅に映す</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="result-box">
+      <div class="result-box-icon">🎬</div>
+      <h4>ワイプ動画完成！</h4>
+      <p>編集なしで1本の動画として保存される</p>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section style="max-width: 1100px; margin: 0 auto;">
+  <div class="section-tag">Features</div>
+  <div class="section-title">思い通りに<br>カスタマイズできる。</div>
+  <p class="section-sub">撮影中も細かく設定できるから、シーンに合った映像が作れる。</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📹</div>
+      <h3>前後カメラ同時撮影</h3>
+      <p>インカメラとアウトカメラを同時に使用。リアルタイムで2映像を合成して録画します。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">↔️</div>
+      <h3>ワイプ位置を変更</h3>
+      <p>右下・左下・左上・右上の4か所からワイプの表示位置を自由に選べます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔲</div>
+      <h3>ワイプサイズを変更</h3>
+      <p>小・大の2サイズから選択。シーンに合わせてワイプの大きさを調整できます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>ダブルタップで入れ替え</h3>
+      <p>画面をダブルタップするとメインとワイプが瞬時に入れ替わります。撮影中もOK。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📷</div>
+      <h3>動画・写真モード切替</h3>
+      <p>動画撮影だけでなく写真撮影にも対応。ワイプ付き写真も簡単に撮れます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <h3>自動保存</h3>
+      <p>撮影完了と同時にカメラロールへ自動保存。そのままSNSにシェアできます。</p>
+    </div>
+  </div>
+
+  <div class="badge-list">
+    <div class="badge-item"><span class="dot"></span>iPhone XS 以降対応</div>
+    <div class="badge-item"><span class="dot"></span>iOS 17.0+</div>
+    <div class="badge-item"><span class="dot"></span>iPad / Mac 対応</div>
+    <div class="badge-item"><span class="dot"></span>日本語・英語</div>
+    <div class="badge-item"><span class="dot"></span>4.3 MB</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>テレビみたいな映像を<br><em>今日から撮ろう。</em></h2>
+  <p>無料でダウンロードして、ワイプ撮影を体験してみよう。</p>
+  <a class="appstore-btn" href="https://apps.apple.com/jp/app/%E3%83%AF%E3%82%A4%E3%83%97%E3%82%AB%E3%83%A1%E3%83%A9-%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E7%84%A1%E3%81%97%E3%81%A7%E3%83%AF%E3%82%A4%E3%83%97%E6%92%AE%E5%BD%B1/id1479329270" target="_blank" rel="noopener">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store からダウンロード" />
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 KAZUHIRO KAMAKURA. All rights reserved.</div>
+  <nav class="footer-links">
+    <a href="../../wipeCamera.html">サポート / プライバシー</a>
+    <a href="https://apps.apple.com/jp/app/%E3%83%AF%E3%82%A4%E3%83%97%E3%82%AB%E3%83%A1%E3%83%A9-%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E7%84%A1%E3%81%97%E3%81%A7%E3%83%AF%E3%82%A4%E3%83%97%E6%92%AE%E5%BD%B1/id1479329270" target="_blank" rel="noopener">App Store</a>
+  </nav>
+</footer>
+
+</body>
+</html>
