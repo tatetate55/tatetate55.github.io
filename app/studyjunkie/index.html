@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyJunkie – アプリを開く前にクイズを解こう｜勉強が習慣になる学習アプリ</title>
+  <meta name="description" content="SNSやゲームを開く前にクイズに正解！スクリーンタイムを勉強時間に変える。数学・英単語・医薬品など多彩なクイズで楽しく学習継続。近日公開。" />
+  <meta name="keywords" content="StudyJunkie,勉強アプリ,スクリーンタイム,学習習慣,英単語,数学,クイズアプリ,勉強習慣化,スマホ依存,受験対策" />
+  <meta property="og:title" content="StudyJunkie – アプリを開く前にクイズを解こう" />
+  <meta property="og:description" content="SNSを開く前にクイズに正解！スクリーンタイムを勉強時間に変える学習アプリ。近日公開。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tatetate55.com/app/studyjunkie/" />
+  <meta property="og:image" content="https://tatetate55.com/app/studyjunkie/icon.jpg" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://tatetate55.com/app/studyjunkie/icon.jpg" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StudyJunkie",
+    "operatingSystem": "iOS",
+    "applicationCategory": "EducationalApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "description": "アプリを開く前にクイズを解こう。スクリーンタイムを勉強時間に変える学習アプリ。",
+    "url": "https://tatetate55.com/app/studyjunkie/",
+    "author": { "@type": "Person", "name": "KAZUHIRO KAMAKURA" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sky:    #e8f4fd;
+      --sky2:   #d0eaf9;
+      --orange: #ff6b2b;
+      --orange2:#ff9a5e;
+      --blue:   #2b7fff;
+      --blue2:  #6ab3ff;
+      --green:  #00b87a;
+      --yellow: #ffc233;
+      --dark:   #1a1a2e;
+      --text:   #1e2030;
+      --muted:  #6b7280;
+      --card:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--sky);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Maru Gothic ProN', sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 62px;
+      background: rgba(232,244,253,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(43,127,255,0.12);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 800; color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      overflow: hidden; flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+    .nav-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .coming-soon-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff; font-size: 12px; font-weight: 800;
+      padding: 7px 16px; border-radius: 50px;
+      box-shadow: 0 4px 14px rgba(255,107,43,0.4);
+      animation: badge-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%,100% { box-shadow: 0 4px 14px rgba(255,107,43,0.4); }
+      50%      { box-shadow: 0 4px 22px rgba(255,107,43,0.7); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(43,127,255,0.12), transparent),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(255,107,43,0.08), transparent);
+      pointer-events: none;
+    }
+
+    /* 浮かぶアイコン */
+    .float-icon {
+      position: absolute; pointer-events: none;
+      font-size: 1.8rem; opacity: 0.35;
+      animation: floaty 5s ease-in-out infinite;
+    }
+    .float-icon:nth-child(1) { top:12%; left:5%;  animation-delay:0s; }
+    .float-icon:nth-child(2) { top:18%; right:6%; animation-delay:1s; }
+    .float-icon:nth-child(3) { top:55%; left:3%;  animation-delay:2s; font-size:1.4rem; }
+    .float-icon:nth-child(4) { top:65%; right:4%; animation-delay:0.5s; }
+    .float-icon:nth-child(5) { top:35%; left:7%;  animation-delay:1.5s; font-size:1.2rem; }
+    .float-icon:nth-child(6) { top:40%; right:5%; animation-delay:2.5s; font-size:1.2rem; }
+    @keyframes floaty {
+      0%,100% { transform: translateY(0) rotate(-8deg); }
+      50%      { transform: translateY(-16px) rotate(8deg); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, rgba(255,107,43,0.12), rgba(43,127,255,0.12));
+      border: 1.5px solid rgba(43,127,255,0.25);
+      color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+      padding: 6px 18px; border-radius: 50px;
+      margin-bottom: 28px;
+    }
+
+    /* マスコットキャラ */
+    .mascot-wrap {
+      position: relative; width: 180px; margin: 0 auto 24px;
+    }
+    .mascot-img {
+      width: 180px; height: 180px; object-fit: contain;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
+      animation: mascot-bob 3s ease-in-out infinite;
+    }
+    @keyframes mascot-bob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    /* コンボバッジ */
+    .combo-badge {
+      position: absolute; top: -8px; right: -16px;
+      background: linear-gradient(135deg, var(--orange), #ff3b6e);
+      color: #fff; font-size: 11px; font-weight: 900;
+      padding: 4px 10px; border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(255,107,43,0.5);
+      animation: pop 0.5s ease;
+      white-space: nowrap;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6.5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.15; letter-spacing: -0.025em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .accent-orange {
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 .accent-blue {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted); max-width: 500px;
+      margin: 0 auto 44px;
+    }
+
+    .hero-sub strong { color: var(--text); font-weight: 700; }
+
+    /* ロックフロー図 */
+    .lock-flow {
+      display: flex; align-items: center; gap: 0;
+      flex-wrap: wrap; justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .flow-item {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      background: white;
+      border-radius: 18px; padding: 18px 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 2px solid rgba(43,127,255,0.1);
+      min-width: 110px;
+    }
+
+    .flow-item.blocked { border-color: rgba(255,107,43,0.3); }
+    .flow-item.quiz    { border-color: rgba(43,127,255,0.4); background: linear-gradient(135deg,#fff,#eef6ff); }
+    .flow-item.unlock  { border-color: rgba(0,184,122,0.4); background: linear-gradient(135deg,#fff,#eefbf6); }
+
+    .flow-icon { font-size: 2rem; }
+    .flow-label { font-size: 12px; font-weight: 700; color: var(--muted); }
+    .flow-sub   { font-size: 11px; color: #aaa; }
+
+    .flow-arrow {
+      font-size: 1.5rem; color: var(--blue); opacity: 0.5;
+      padding: 0 8px;
+    }
+
+    /* CTAボタン */
+    .btn-coming {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff; font-size: 17px; font-weight: 900;
+      padding: 18px 40px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 10px 32px rgba(255,107,43,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    /* ── CONCEPT SECTION ── */
+    .concept-section {
+      background: var(--dark);
+      padding: 100px 5%;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .concept-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(43,127,255,0.2), transparent);
+      pointer-events: none;
+    }
+
+    .concept-section .label {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 16px;
+    }
+
+    .concept-section h2 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 900; letter-spacing: -0.025em;
+      color: white; margin-bottom: 16px; line-height: 1.2;
+    }
+
+    .concept-section h2 span {
+      color: var(--orange2);
+    }
+
+    .concept-section p { color: rgba(255,255,255,0.6); font-size: 1rem; max-width: 480px; margin: 0 auto; }
+
+    .concept-cards {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      justify-content: center; margin-top: 56px;
+    }
+
+    .concept-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px; padding: 32px 28px;
+      text-align: left; flex: 1; min-width: 240px; max-width: 300px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .concept-card:hover { border-color: rgba(255,107,43,0.4); transform: translateY(-4px); }
+
+    .concept-icon { font-size: 2rem; margin-bottom: 16px; }
+    .concept-card h3 { font-size: 1.05rem; font-weight: 800; color: white; margin-bottom: 8px; }
+    .concept-card p  { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+    /* ── FEATURES ── */
+    .features-section { padding: 100px 5%; }
+
+    .section-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 4.5vw, 2.8rem);
+      font-weight: 900; letter-spacing: -0.025em;
+      line-height: 1.2; margin-bottom: 16px;
+    }
+
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 480px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 18px; margin-top: 52px;
+    }
+
+    .feat-card {
+      background: white;
+      border-radius: 22px; padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 2px solid transparent;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .feat-card:hover {
+      border-color: rgba(43,127,255,0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 36px rgba(43,127,255,0.12);
+    }
+
+    .feat-icon {
+      width: 54px; height: 54px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 16px;
+    }
+    .fi-orange { background: linear-gradient(135deg, #fff3ee, #ffd5bf); }
+    .fi-blue   { background: linear-gradient(135deg, #eef4ff, #c5deff); }
+    .fi-green  { background: linear-gradient(135deg, #edfbf5, #b8f0d8); }
+    .fi-yellow { background: linear-gradient(135deg, #fffbee, #ffe9a0); }
+    .fi-purple { background: linear-gradient(135deg, #f3eeff, #d8c3ff); }
+
+    .feat-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+    .feat-card p  { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── QUIZ TYPES ── */
+    .quiz-section {
+      background: white; padding: 100px 5%;
+      border-top: 2px solid var(--sky2);
+      border-bottom: 2px solid var(--sky2);
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-top: 52px;
+    }
+
+    .quiz-card {
+      border-radius: 20px; padding: 28px 22px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .quiz-card:hover { transform: translateY(-4px); }
+
+    .qc-math   { background: linear-gradient(135deg, #fff3ee, #ffddd0); }
+    .qc-eng    { background: linear-gradient(135deg, #eef4ff, #cfe3ff); }
+    .qc-med    { background: linear-gradient(135deg, #edfbf5, #c0f0dc); }
+    .qc-custom { background: linear-gradient(135deg, #f9f3ff, #e2c9ff); }
+
+    .quiz-card .icon { font-size: 2.5rem; margin-bottom: 14px; }
+    .quiz-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+    .quiz-card p  { font-size: 0.82rem; color: var(--muted); }
+
+    .level-tags {
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+      margin-top: 10px;
+    }
+
+    .level-tag {
+      font-size: 10px; font-weight: 700;
+      background: rgba(0,0,0,0.08);
+      border-radius: 20px; padding: 3px 10px;
+      color: var(--text);
+    }
+
+    /* ── GAMIFICATION ── */
+    .game-section {
+      padding: 100px 5%;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      text-align: center;
+    }
+
+    .game-section .label { color: var(--yellow); }
+    .game-section h2 { color: white; font-size: clamp(1.7rem,4.5vw,2.8rem); font-weight:900; letter-spacing:-0.025em; line-height:1.2; margin-bottom:14px; }
+    .game-section p { color: rgba(255,255,255,0.55); font-size:1rem; max-width:460px; margin:0 auto; }
+
+    .game-cards {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      justify-content: center; margin-top: 52px;
+    }
+
+    .game-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px; padding: 28px 24px;
+      text-align: center; flex:1; min-width:160px; max-width: 200px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .game-card:hover { transform: translateY(-4px); border-color: rgba(255,194,51,0.4); }
+
+    .game-card .icon { font-size: 2.2rem; margin-bottom: 14px; }
+    .game-card h3 { font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 6px; }
+    .game-card p  { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+
+    /* ZONE badge */
+    .zone-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--blue), #7c3aed);
+      color: white; font-size: 11px; font-weight: 900;
+      padding: 3px 12px; border-radius: 20px;
+      letter-spacing: 0.08em;
+      box-shadow: 0 2px 10px rgba(124,58,237,0.5);
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      padding: 100px 5%; text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,107,43,0.1), transparent);
+      pointer-events: none;
+    }
+
+    .cta-mascot {
+      width: 120px; height: 120px; object-fit: contain;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1));
+      animation: mascot-bob 3s ease-in-out infinite;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.8rem,5vw,3rem);
+      font-weight: 900; letter-spacing: -0.025em;
+      margin-bottom: 14px;
+    }
+
+    .cta-section p { color: var(--muted); font-size: 1rem; max-width: 400px; margin: 0 auto 36px; }
+
+    .cta-coming {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: white; font-size: 18px; font-weight: 900;
+      padding: 20px 48px; border-radius: 50px;
+      box-shadow: 0 10px 36px rgba(255,107,43,0.4);
+      animation: badge-pulse 2.5s ease-in-out infinite;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 2px solid rgba(43,127,255,0.1);
+      padding: 36px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-copy { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--orange); }
+
+    @media (max-width: 640px) {
+      .lock-flow { gap: 8px; }
+      .flow-arrow { padding: 0 2px; font-size: 1.2rem; }
+      .flow-item { min-width: 90px; padding: 14px 12px; }
+      footer { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-icon"><img src="icon.jpg" alt="StudyJunkie" /></div>
+    StudyJunkie
+  </a>
+  <div class="coming-soon-badge">🚀 近日公開</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="float-icon">📱</span>
+  <span class="float-icon">⭐</span>
+  <span class="float-icon">📚</span>
+  <span class="float-icon">🔥</span>
+  <span class="float-icon">✏️</span>
+  <span class="float-icon">💡</span>
+
+  <div class="hero-eyebrow">🎓 勉強が習慣になるアプリ</div>
+
+  <div class="mascot-wrap">
+    <img class="mascot-img" src="icon.jpg" alt="StudyJunkieキャラクター" />
+    <div class="combo-badge">🔥 COMBO x5</div>
+  </div>
+
+  <h1>
+    <span class="accent-orange">SNSを開く前に</span><br>
+    クイズに<span class="accent-blue">正解しよう。</span>
+  </h1>
+  <p class="hero-sub">
+    スクリーンタイムをそのまま<strong>勉強時間</strong>に。<br>
+    数学・英単語・医薬品など好きな科目でクイズをクリアしてからアプリを解放。
+  </p>
+
+  <!-- ロックフロー -->
+  <div class="lock-flow">
+    <div class="flow-item blocked">
+      <div class="flow-icon">📵</div>
+      <div class="flow-label">アプリを開こうとする</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item quiz">
+      <div class="flow-icon">🧠</div>
+      <div class="flow-label">クイズが出る</div>
+      <div class="flow-sub">正解するまでロック</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item unlock">
+      <div class="flow-icon">🔓</div>
+      <div class="flow-label">アプリ解放！</div>
+      <div class="flow-sub">時間制限付き</div>
+    </div>
+  </div>
+
+  <div class="btn-coming">🚀 近日App Storeで公開予定</div>
+</section>
+
+<!-- CONCEPT -->
+<section class="concept-section">
+  <div class="label">Concept</div>
+  <h2>スマホ時間を<br><span>自動的に</span>勉強時間へ。</h2>
+  <p>意志力に頼らない。アプリを開こうとするその瞬間を、学びのチャンスに変える。</p>
+
+  <div class="concept-cards">
+    <div class="concept-card">
+      <div class="concept-icon">🔒</div>
+      <h3>iOS スクリーンタイム連携</h3>
+      <p>Appleのファミリーコントロール機能と連携。SNSやゲームを開こうとするたびにクイズが起動。</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">⏳</div>
+      <h3>正解したら時間制限付きで解放</h3>
+      <p>正解すると5〜30分（設定可能）だけアプリが開ける。自然にスマホ時間がコントロールされる。</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">📈</div>
+      <h3>毎日の積み重ねが見える</h3>
+      <p>回答数・正答率・連続正解記録・覚えた単語数などの統計でモチベーションが続く。</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" style="max-width: 1100px; margin: 0 auto;">
+  <div class="section-label">Features</div>
+  <div class="section-title">勉強を続けるための<br>しかけが詰まってる。</div>
+  <p class="section-sub">「やる気に頼らない」設計で、気づいたら毎日勉強が続く。</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon fi-orange">📵</div>
+      <h3>アプリロック連携</h3>
+      <p>SNS・ゲームなど好きなアプリを選んでロック対象に設定。開こうとするたびクイズが発動。</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-blue">🎯</div>
+      <h3>7段階の難易度</h3>
+      <p>中学1〜3年・高校1〜3年・TOEICの7段階。自分のレベルに合ったクイズで無理なく続けられる。</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-green">📖</div>
+      <h3>単語記憶トラッキング</h3>
+      <p>3回以上正解した単語は「覚えた」判定。覚えた単語数が増えていくのが目で見えてモチベアップ。</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-yellow">✏️</div>
+      <h3>カスタム問題作成</h3>
+      <p>自分だけのオリジナル問題を追加できる。試験直前の暗記や資格勉強にも対応。</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-purple">📊</div>
+      <h3>詳細な学習統計</h3>
+      <p>総回答数・最近の正答率・今日の回答数・最高連続記録など、学習状況を多角的に可視化。</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-blue">🌏</div>
+      <h3>日本語・英語対応</h3>
+      <p>インターフェースは日本語と英語の両方に対応。英語学習者にも使いやすい。</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ TYPES -->
+<section class="quiz-section">
+  <div style="max-width:1100px; margin:0 auto;">
+    <div class="section-label">Quiz Types</div>
+    <div class="section-title">好きな科目を選んで<br>毎日クイズをこなそう。</div>
+    <p class="section-sub">4つのカテゴリ、14種類の問題パックが最初から入ってる。</p>
+
+    <div class="quiz-grid">
+      <div class="quiz-card qc-math">
+        <div class="icon">🔢</div>
+        <h3>数学</h3>
+        <p>アルゴリズムで自動生成される計算問題。難易度に応じて問題の複雑さが変わる。</p>
+        <div class="level-tags">
+          <span class="level-tag">中1〜3</span>
+          <span class="level-tag">高1〜3</span>
+        </div>
+      </div>
+      <div class="quiz-card qc-eng">
+        <div class="icon">🔤</div>
+        <h3>英単語</h3>
+        <p>教科書レベルの英単語を音声付きで出題。154〜500語以上の豊富なワードリスト。</p>
+        <div class="level-tags">
+          <span class="level-tag">中1〜3</span>
+          <span class="level-tag">高1〜3</span>
+          <span class="level-tag">TOEIC</span>
+        </div>
+      </div>
+      <div class="quiz-card qc-med">
+        <div class="icon">💊</div>
+        <h3>医薬品</h3>
+        <p>薬の商品名と一般名のマッチング問題。医療・薬学系の学生に最適なクイズ。</p>
+        <div class="level-tags">
+          <span class="level-tag">医薬品名</span>
+          <span class="level-tag">一般名</span>
+        </div>
+      </div>
+      <div class="quiz-card qc-custom">
+        <div class="icon">✏️</div>
+        <h3>カスタム</h3>
+        <p>自分で問題を追加できるオリジナルクイズ。試験対策・資格勉強など何でもOK。</p>
+        <div class="level-tags">
+          <span class="level-tag">自由設定</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMIFICATION -->
+<section class="game-section">
+  <div class="section-label label">Gamification</div>
+  <h2>ゲームみたいに<br>勉強できる。</h2>
+  <p>コンボ・ポイント・ZONEモード。楽しい仕掛けで勉強がやめられなくなる。</p>
+
+  <div class="game-cards">
+    <div class="game-card">
+      <div class="icon">🔥</div>
+      <h3>コンボシステム</h3>
+      <p>連続正解でコンボが積み上がる。途切れさせたくない！</p>
+    </div>
+    <div class="game-card">
+      <div class="icon">⭐</div>
+      <h3>ポイント獲得</h3>
+      <p>正解するたびにポイントが貯まる。高得点を目指せ！</p>
+    </div>
+    <div class="game-card">
+      <div class="icon">⚡</div>
+      <h3><span class="zone-badge">ZONE</span> モード</h3>
+      <p>コンボ5以上で突入。特別エフェクトで気分が上がる。</p>
+    </div>
+    <div class="game-card">
+      <div class="icon">🎉</div>
+      <h3>紙吹雪エフェクト</h3>
+      <p>クリア時に紙吹雪が舞う。達成感がたまらない！</p>
+    </div>
+    <div class="game-card">
+      <div class="icon">🏆</div>
+      <h3>ベスト記録</h3>
+      <p>最高連続正解・正答率を記録。自己ベスト更新を目指そう。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <img class="cta-mascot" src="icon.jpg" alt="StudyJunkie" />
+  <h2>勉強、はじめよう。</h2>
+  <p>スマホを開くたびに、少しずつ賢くなる。</p>
+  <div class="cta-coming">🚀 近日App Storeで公開予定</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 KAZUHIRO KAMAKURA. All rights reserved.</div>
+  <nav class="footer-links">
+    <a href="../../privacy.html">プライバシーポリシー</a>
+  </nav>
+</footer>
+
+</body>
+</html>
