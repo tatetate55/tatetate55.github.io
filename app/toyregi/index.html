@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>おもちゃレジ – お店やさんごっこ知育アプリ</title>
+  <meta name="description" content="手をかざしてスキャン！お店やさんごっこが楽しめる知育アプリ。数字や計算を楽しく学べる。" />
+  <meta property="og:title" content="おもちゃレジ – お店やさんごっこ知育アプリ" />
+  <meta property="og:description" content="手をかざしてスキャン！ピッ！と鳴って楽しいレジごっこアプリ。無料配信中。" />
+  <meta property="og:type" content="website" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:   #ff6eb4;
+      --pink2:  #ffadd8;
+      --yellow: #ffd93d;
+      --orange: #ff9a3c;
+      --purple: #b388ff;
+      --purple2:#e1bee7;
+      --mint:   #69e0b5;
+      --bg:     #fffaf5;
+      --card:   #ffffff;
+      --text:   #3a2e4a;
+      --muted:  #8a7fa0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'BIZ UDGothic', sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── 背景の飾り ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(circle 600px at 10% 20%, rgba(255,110,180,0.12), transparent),
+        radial-gradient(circle 500px at 90% 80%, rgba(179,136,255,0.12), transparent),
+        radial-gradient(circle 400px at 50% 50%, rgba(255,217,61,0.06), transparent);
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      background: rgba(255,250,245,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 2px solid rgba(255,110,180,0.15);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 800; color: var(--text);
+      text-decoration: none; letter-spacing: -0.01em;
+    }
+
+    .nav-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 4px 12px rgba(255,110,180,0.35);
+    }
+
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff; font-size: 14px; font-weight: 800;
+      padding: 10px 22px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(255,110,180,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,110,180,0.5); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      position: relative;
+    }
+
+    /* 浮かぶデコレーション */
+    .deco {
+      position: absolute; pointer-events: none;
+      font-size: 2rem; opacity: 0.5;
+      animation: float 4s ease-in-out infinite;
+    }
+    .deco:nth-child(1)  { top: 12%; left: 6%;  animation-delay: 0s; }
+    .deco:nth-child(2)  { top: 20%; right: 8%; animation-delay: 0.8s; }
+    .deco:nth-child(3)  { top: 60%; left: 3%;  animation-delay: 1.6s; }
+    .deco:nth-child(4)  { top: 70%; right: 5%; animation-delay: 0.4s; }
+    .deco:nth-child(5)  { top: 40%; left: 8%;  animation-delay: 2s; font-size: 1.4rem; }
+    .deco:nth-child(6)  { top: 30%; right: 4%; animation-delay: 1.2s; font-size: 1.4rem; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50%       { transform: translateY(-14px) rotate(5deg); }
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #fff0f8, #fff8e1);
+      border: 2px solid rgba(255,110,180,0.3);
+      color: var(--pink); font-size: 13px; font-weight: 800;
+      padding: 8px 20px; border-radius: 50px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(255,110,180,0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 .line1 { color: var(--text); }
+    .hero h1 .line2 {
+      background: linear-gradient(135deg, var(--pink), var(--orange), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-accent {
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 800;
+      color: var(--purple);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      color: var(--muted);
+      max-width: 480px; margin: 0 auto 44px;
+    }
+
+    /* ピッ！ボックス */
+    .pip-box {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, #fff0f8, #fff8e1);
+      border: 2.5px dashed rgba(255,110,180,0.4);
+      border-radius: 20px;
+      padding: 16px 28px;
+      margin-bottom: 40px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .pip-text { font-size: 1.5rem; font-weight: 900; color: var(--pink); }
+    .pip-sub  { font-size: 0.85rem; color: var(--muted); }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,110,180,0.3); }
+      50%       { box-shadow: 0 0 0 10px rgba(255,110,180,0); }
+    }
+
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 60px;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff; font-size: 17px; font-weight: 900;
+      padding: 18px 38px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 28px rgba(255,110,180,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(255,110,180,0.55); }
+
+    /* ── 対象年齢バッジ ── */
+    .age-badges {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    }
+
+    .age-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: white;
+      border-radius: 16px; padding: 12px 20px;
+      font-size: 14px; font-weight: 700; color: var(--text);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      border: 2px solid rgba(255,110,180,0.12);
+    }
+    .age-badge .em { font-size: 20px; }
+
+    /* ── SECTION ── */
+    section { padding: 80px 5%; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #fff0f8, #f3e5ff);
+      border-radius: 50px; padding: 6px 18px;
+      font-size: 12px; font-weight: 800; letter-spacing: 0.08em;
+      color: var(--pink); margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 900; letter-spacing: -0.02em;
+      line-height: 1.25; margin-bottom: 14px;
+    }
+
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 460px; }
+
+    /* ── HOW TO PLAY ── */
+    .how-bg {
+      background: linear-gradient(135deg, #fff0f8 0%, #f3e5ff 50%, #fff8e1 100%);
+      border-radius: 32px;
+      padding: 60px 5%;
+      text-align: center;
+      margin: 0 5%;
+    }
+
+    .steps-row {
+      display: flex; gap: 0; justify-content: center;
+      flex-wrap: wrap; margin-top: 50px;
+    }
+
+    .step-item {
+      flex: 1; min-width: 160px; max-width: 220px;
+      text-align: center; padding: 20px 16px;
+      position: relative;
+    }
+
+    .step-item:not(:last-child)::after {
+      content: '→';
+      position: absolute; right: -12px; top: 40px;
+      font-size: 1.5rem; color: rgba(255,110,180,0.4);
+    }
+
+    .step-icon {
+      width: 80px; height: 80px; border-radius: 24px;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin: 0 auto 16px;
+      box-shadow: 0 6px 24px rgba(255,110,180,0.2);
+    }
+
+    .step-item h3 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+    .step-item p  { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px; margin-top: 50px;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 24px; padding: 30px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      border: 2px solid rgba(255,110,180,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 36px rgba(255,110,180,0.15);
+    }
+
+    .feature-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 18px;
+    }
+    .icon-pink   { background: linear-gradient(135deg, #fff0f8, #ffadd8); }
+    .icon-yellow { background: linear-gradient(135deg, #fff8e1, #ffd93d55); }
+    .icon-purple { background: linear-gradient(135deg, #f3e5ff, #b388ff55); }
+    .icon-mint   { background: linear-gradient(135deg, #e8fdf5, #69e0b555); }
+    .icon-orange { background: linear-gradient(135deg, #fff3e0, #ff9a3c55); }
+
+    .feature-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
+    .feature-card p  { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── DIFFICULTY ── */
+    .diff-section { text-align: center; }
+
+    .diff-cards {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      justify-content: center; margin-top: 44px;
+    }
+
+    .diff-card {
+      background: white;
+      border-radius: 24px; padding: 28px 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      min-width: 180px; flex: 1; max-width: 220px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .diff-card:hover { transform: translateY(-4px); }
+
+    .diff-star { font-size: 1.5rem; margin-bottom: 10px; }
+    .diff-label { font-size: 1.1rem; font-weight: 900; margin-bottom: 6px; }
+    .diff-desc  { font-size: 0.82rem; color: var(--muted); }
+
+    .diff-card.easy   { border-top: 4px solid var(--mint); }
+    .diff-card.normal { border-top: 4px solid var(--yellow); }
+    .diff-card.hard   { border-top: 4px solid var(--pink); }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      background: linear-gradient(135deg, var(--pink), var(--orange), var(--yellow));
+      border-radius: 40px;
+      margin: 0 4% 80px;
+      padding: 80px 5%;
+      position: relative; overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '🛒💰🎮⭐🎪✨';
+      position: absolute; font-size: 4rem;
+      opacity: 0.12; letter-spacing: 2rem;
+      white-space: nowrap;
+      top: 10px; left: -20px;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900; color: white;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .cta-section p { color: rgba(255,255,255,0.85); font-size: 1rem; margin-bottom: 36px; }
+
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: white;
+      color: var(--pink); font-size: 17px; font-weight: 900;
+      padding: 18px 40px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.25); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 2px solid rgba(255,110,180,0.12);
+      padding: 36px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-copy { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--pink); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .step-item:not(:last-child)::after { display: none; }
+      .how-bg { margin: 0; border-radius: 20px; }
+      .cta-section { margin: 0 0 60px; border-radius: 24px; }
+      footer { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-icon">🛒</div>
+    おもちゃレジ
+  </a>
+  <a class="nav-cta" href="https://apps.apple.com/jp/app/%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83%E3%83%AC%E3%82%B8/id6758148297" target="_blank" rel="noopener">
+    無料でダウンロード
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- 浮かぶデコ -->
+  <span class="deco">🛒</span>
+  <span class="deco">⭐</span>
+  <span class="deco">🎪</span>
+  <span class="deco">✨</span>
+  <span class="deco">💰</span>
+  <span class="deco">🎀</span>
+
+  <div class="hero-badge">📱 App Store 無料配信中</div>
+
+  <h1>
+    <div class="line1">お店やさんごっこ、</div>
+    <div class="line2">はじめよう！</div>
+  </h1>
+
+  <div class="hero-accent">〜 知育レジごっこアプリ 〜</div>
+
+  <p class="hero-sub">
+    手をかざすだけで「ピッ！」とスキャン。<br>
+    数字や計算を楽しく学べる、子ども向け無料アプリ。
+  </p>
+
+  <div class="pip-box">
+    <span style="font-size:2rem">🤚</span>
+    <div>
+      <div class="pip-text">ピッ！</div>
+      <div class="pip-sub">手をかざしてスキャン！</div>
+    </div>
+    <span style="font-size:2rem">🛒</span>
+  </div>
+
+  <div class="hero-actions">
+    <a class="btn-primary" href="https://apps.apple.com/jp/app/%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83%E3%83%AC%E3%82%B8/id6758148297" target="_blank" rel="noopener">
+      🍎 無料でダウンロード
+    </a>
+  </div>
+
+  <div class="age-badges">
+    <div class="age-badge"><span class="em">👶</span> 4才から遊べる</div>
+    <div class="age-badge"><span class="em">📖</span> ひらがな対応</div>
+    <div class="age-badge"><span class="em">🔒</span> データ収集なし</div>
+    <div class="age-badge"><span class="em">🆓</span> 完全無料</div>
+  </div>
+</section>
+
+<!-- HOW TO PLAY -->
+<div class="how-bg" id="howto">
+  <div class="section-label">✨ あそびかた</div>
+  <div class="section-title">3ステップで<br>お店やさんスタート！</div>
+
+  <div class="steps-row">
+    <div class="step-item">
+      <div class="step-icon">🤚</div>
+      <h3>手をかざす</h3>
+      <p>カメラに手を近づけるだけ！</p>
+    </div>
+    <div class="step-item">
+      <div class="step-icon">🔊</div>
+      <h3>ピッ！と鳴る</h3>
+      <p>スキャン音とともに金額を読み上げ</p>
+    </div>
+    <div class="step-item">
+      <div class="step-icon">🧾</div>
+      <h3>おかいけい！</h3>
+      <p>合計金額をお知らせ。お会計完了！</p>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features" style="max-width: 1100px; margin: 0 auto;">
+  <div class="section-label">🎮 きのう</div>
+  <div class="section-title">楽しみながら<br>学べる工夫がいっぱい。</div>
+  <p class="section-sub">お子さまが飽きない仕掛けで、自然に数字を覚えられます。</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon icon-pink">🤚</div>
+      <h3>手かざしスキャン</h3>
+      <p>カメラに手をかざすだけ！直感的な操作で小さなお子さまでも楽しめます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-yellow">🔊</div>
+      <h3>音声よみあげ</h3>
+      <p>スキャンした商品の金額を音声で読み上げ。ひらがなで表示されるので安心。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-purple">🧾</div>
+      <h3>おかいけいボタン</h3>
+      <p>複数の商品をスキャン後、ボタンを押すと合計金額を読み上げます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-mint">⚙️</div>
+      <h3>カスタム設定</h3>
+      <p>音声オン/オフ、読み上げ速度の調整、バイブレーションのオン/オフが設定できます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-orange">🌟</div>
+      <h3>難易度えらべる</h3>
+      <p>かんたん・ふつう・むずかしいの3段階。成長に合わせて調整できます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-pink">🔒</div>
+      <h3>プライバシー安心</h3>
+      <p>データ収集なし。お子さまの情報は一切取得しないので保護者も安心。</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFICULTY -->
+<section class="diff-section" style="background: linear-gradient(180deg, transparent, rgba(255,110,180,0.05), transparent); padding: 80px 5%;">
+  <div class="section-label" style="margin: 0 auto 16px;">🌟 なんいど</div>
+  <div class="section-title">成長に合わせて<br>ステップアップ！</div>
+
+  <div class="diff-cards">
+    <div class="diff-card easy">
+      <div class="diff-star">⭐</div>
+      <div class="diff-label" style="color: var(--mint)">かんたん</div>
+      <div class="diff-desc">小さな金額でゆっくり練習。はじめてのお子さまに。</div>
+    </div>
+    <div class="diff-card normal">
+      <div class="diff-star">⭐⭐</div>
+      <div class="diff-label" style="color: var(--orange)">ふつう</div>
+      <div class="diff-desc">少し大きな金額に挑戦。計算の練習にぴったり。</div>
+    </div>
+    <div class="diff-card hard">
+      <div class="diff-star">⭐⭐⭐</div>
+      <div class="diff-label" style="color: var(--pink)">むずかしい</div>
+      <div class="diff-desc">大きな金額にも挑戦！本格的なレジごっこを楽しもう。</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>さあ、お店を<br>オープンしよう！🎉</h2>
+  <p>無料でダウンロードして、今すぐレジごっこを楽しもう！</p>
+  <a class="btn-white" href="https://apps.apple.com/jp/app/%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83%E3%83%AC%E3%82%B8/id6758148297" target="_blank" rel="noopener">
+    🍎 App Store で無料DL
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 KAZUHIRO KAMAKURA. All rights reserved.</div>
+  <nav class="footer-links">
+    <a href="../toyregi_privacy.html">プライバシーポリシー</a>
+    <a href="https://apps.apple.com/jp/app/%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83%E3%83%AC%E3%82%B8/id6758148297" target="_blank" rel="noopener">App Store</a>
+  </nav>
+</footer>
+
+</body>
+</html>
