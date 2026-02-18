@@ -66,9 +66,11 @@
 
     .nav-icon {
       width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--pink), var(--orange));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; box-shadow: 0 4px 12px rgba(255,110,180,0.35);
+      overflow: hidden; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(255,110,180,0.35);
+    }
+    .nav-icon img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
 
     .nav-cta {
@@ -378,7 +380,7 @@
 <!-- NAV -->
 <nav class="site-nav">
   <a class="nav-logo" href="#">
-    <div class="nav-icon">🛒</div>
+    <div class="nav-icon"><img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/90/e2/fc/90e2fc0f-fb20-6d48-4a14-d560eb972ba8/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg" alt="おもちゃレジ" /></div>
     おもちゃレジ
   </a>
   <a class="nav-cta" href="https://apps.apple.com/jp/app/%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83%E3%83%AC%E3%82%B8/id6758148297" target="_blank" rel="noopener">
