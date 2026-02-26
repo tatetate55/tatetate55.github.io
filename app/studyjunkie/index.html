@@ -4,26 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StudyJunkie – アプリを開く前にクイズを解こう｜勉強が習慣になる学習アプリ</title>
-  <meta name="description" content="SNSやゲームを開く前にクイズに正解！スクリーンタイムを勉強時間に変える。数学・英単語・医薬品など多彩なクイズで楽しく学習継続。近日公開。" />
+  <meta name="description" content="SNSやゲームを開く前にクイズに正解！スクリーンタイムを勉強時間に変える。数学・英単語・医薬品など多彩なクイズで楽しく学習継続。無料。" />
   <meta name="keywords" content="StudyJunkie,勉強アプリ,スクリーンタイム,学習習慣,英単語,数学,クイズアプリ,勉強習慣化,スマホ依存,受験対策" />
+  <link rel="canonical" href="https://tatetate55.com/app/studyjunkie/" />
   <meta property="og:title" content="StudyJunkie – アプリを開く前にクイズを解こう" />
-  <meta property="og:description" content="SNSを開く前にクイズに正解！スクリーンタイムを勉強時間に変える学習アプリ。近日公開。" />
+  <meta property="og:description" content="SNSを開く前にクイズに正解！スクリーンタイムを勉強時間に変える学習アプリ。無料。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://tatetate55.com/app/studyjunkie/" />
   <meta property="og:image" content="https://tatetate55.com/app/studyjunkie/icon.jpg" />
   <meta property="og:locale" content="ja_JP" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="StudyJunkie – アプリを開く前にクイズを解こう" />
+  <meta name="twitter:description" content="SNSを開く前にクイズに正解！スクリーンタイムを勉強時間に変える学習アプリ。無料。" />
   <meta name="twitter:image" content="https://tatetate55.com/app/studyjunkie/icon.jpg" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "StudyJunkie",
-    "operatingSystem": "iOS",
+    "operatingSystem": "iOS 18.0+",
     "applicationCategory": "EducationalApplication",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
     "description": "アプリを開く前にクイズを解こう。スクリーンタイムを勉強時間に変える学習アプリ。",
     "url": "https://tatetate55.com/app/studyjunkie/",
+    "downloadUrl": "https://apps.apple.com/jp/app/studyjunkie/id6758565892",
     "author": { "@type": "Person", "name": "KAZUHIRO KAMAKURA" }
   }
   </script>
@@ -80,18 +84,16 @@
     }
     .nav-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .coming-soon-badge {
-      display: inline-flex; align-items: center; gap: 6px;
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
       background: linear-gradient(135deg, var(--orange), var(--orange2));
-      color: #fff; font-size: 12px; font-weight: 800;
-      padding: 7px 16px; border-radius: 50px;
-      box-shadow: 0 4px 14px rgba(255,107,43,0.4);
-      animation: badge-pulse 2.5s ease-in-out infinite;
+      color: #fff; font-size: 14px; font-weight: 800;
+      padding: 10px 22px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(255,107,43,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    @keyframes badge-pulse {
-      0%,100% { box-shadow: 0 4px 14px rgba(255,107,43,0.4); }
-      50%      { box-shadow: 0 4px 22px rgba(255,107,43,0.7); }
-    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,43,0.5); }
 
     /* ── HERO ── */
     .hero {
@@ -144,6 +146,7 @@
     }
     .mascot-img {
       width: 180px; height: 180px; object-fit: contain;
+      border-radius: 40px;
       filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
       animation: mascot-bob 3s ease-in-out infinite;
     }
@@ -159,7 +162,6 @@
       color: #fff; font-size: 11px; font-weight: 900;
       padding: 4px 10px; border-radius: 20px;
       box-shadow: 0 3px 10px rgba(255,107,43,0.5);
-      animation: pop 0.5s ease;
       white-space: nowrap;
     }
 
@@ -220,15 +222,29 @@
     }
 
     /* CTAボタン */
-    .btn-coming {
-      display: inline-flex; align-items: center; gap: 12px;
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
       background: linear-gradient(135deg, var(--orange), var(--orange2));
       color: #fff; font-size: 17px; font-weight: 900;
       padding: 18px 40px; border-radius: 50px;
       text-decoration: none;
       box-shadow: 0 10px 32px rgba(255,107,43,0.45);
       transition: transform 0.2s, box-shadow 0.2s;
-      cursor: default;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(255,107,43,0.55); }
+
+    /* 特徴バッジ */
+    .hero-badges {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      margin-top: 24px;
+    }
+    .hero-badge-item {
+      display: flex; align-items: center; gap: 8px;
+      background: white;
+      border-radius: 16px; padding: 10px 18px;
+      font-size: 13px; font-weight: 700; color: var(--text);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      border: 2px solid rgba(43,127,255,0.1);
     }
 
     /* ── CONCEPT SECTION ── */
@@ -257,9 +273,7 @@
       color: white; margin-bottom: 16px; line-height: 1.2;
     }
 
-    .concept-section h2 span {
-      color: var(--orange2);
-    }
+    .concept-section h2 span { color: var(--orange2); }
 
     .concept-section p { color: rgba(255,255,255,0.6); font-size: 1rem; max-width: 480px; margin: 0 auto; }
 
@@ -400,7 +414,6 @@
     .game-card h3 { font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 6px; }
     .game-card p  { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
 
-    /* ZONE badge */
     .zone-badge {
       display: inline-block;
       background: linear-gradient(135deg, var(--blue), #7c3aed);
@@ -425,6 +438,7 @@
 
     .cta-mascot {
       width: 120px; height: 120px; object-fit: contain;
+      border-radius: 28px;
       margin-bottom: 24px;
       filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1));
       animation: mascot-bob 3s ease-in-out infinite;
@@ -437,15 +451,6 @@
     }
 
     .cta-section p { color: var(--muted); font-size: 1rem; max-width: 400px; margin: 0 auto 36px; }
-
-    .cta-coming {
-      display: inline-flex; align-items: center; gap: 12px;
-      background: linear-gradient(135deg, var(--orange), var(--orange2));
-      color: white; font-size: 18px; font-weight: 900;
-      padding: 20px 48px; border-radius: 50px;
-      box-shadow: 0 10px 36px rgba(255,107,43,0.4);
-      animation: badge-pulse 2.5s ease-in-out infinite;
-    }
 
     /* ── FOOTER ── */
     footer {
@@ -476,7 +481,9 @@
     <div class="nav-icon"><img src="icon.jpg" alt="StudyJunkie" /></div>
     StudyJunkie
   </a>
-  <div class="coming-soon-badge">🚀 近日公開</div>
+  <a class="nav-cta" href="https://apps.apple.com/jp/app/studyjunkie/id6758565892" target="_blank" rel="noopener">
+    無料でダウンロード
+  </a>
 </nav>
 
 <!-- HERO -->
@@ -491,7 +498,7 @@
   <div class="hero-eyebrow">🎓 勉強が習慣になるアプリ</div>
 
   <div class="mascot-wrap">
-    <img class="mascot-img" src="icon.jpg" alt="StudyJunkieキャラクター" />
+    <img class="mascot-img" src="icon.jpg" alt="StudyJunkieアイコン" />
     <div class="combo-badge">🔥 COMBO x5</div>
   </div>
 
@@ -524,7 +531,16 @@
     </div>
   </div>
 
-  <div class="btn-coming">🚀 近日App Storeで公開予定</div>
+  <a class="btn-primary" href="https://apps.apple.com/jp/app/studyjunkie/id6758565892" target="_blank" rel="noopener">
+    🍎 無料でダウンロード
+  </a>
+
+  <div class="hero-badges">
+    <div class="hero-badge-item">📱 iOS 18以上</div>
+    <div class="hero-badge-item">🆓 完全無料</div>
+    <div class="hero-badge-item">🔒 データ収集なし</div>
+    <div class="hero-badge-item">🌏 日本語・英語対応</div>
+  </div>
 </section>
 
 <!-- CONCEPT -->
@@ -542,7 +558,7 @@
     <div class="concept-card">
       <div class="concept-icon">⏳</div>
       <h3>正解したら時間制限付きで解放</h3>
-      <p>正解すると5〜30分（設定可能）だけアプリが開ける。自然にスマホ時間がコントロールされる。</p>
+      <p>正解すると設定した時間だけアプリが開ける。自然にスマホ時間がコントロールされる。</p>
     </div>
     <div class="concept-card">
       <div class="concept-icon">📈</div>
@@ -597,7 +613,7 @@
   <div style="max-width:1100px; margin:0 auto;">
     <div class="section-label">Quiz Types</div>
     <div class="section-title">好きな科目を選んで<br>毎日クイズをこなそう。</div>
-    <p class="section-sub">4つのカテゴリ、14種類の問題パックが最初から入ってる。</p>
+    <p class="section-sub">4つのカテゴリ、豊富な問題パックが最初から入ってる。</p>
 
     <div class="quiz-grid">
       <div class="quiz-card qc-math">
@@ -612,7 +628,7 @@
       <div class="quiz-card qc-eng">
         <div class="icon">🔤</div>
         <h3>英単語</h3>
-        <p>教科書レベルの英単語を音声付きで出題。154〜500語以上の豊富なワードリスト。</p>
+        <p>教科書レベルの英単語を音声付きで出題。3700語以上の豊富なワードリスト。</p>
         <div class="level-tags">
           <span class="level-tag">中1〜3</span>
           <span class="level-tag">高1〜3</span>
@@ -680,14 +696,18 @@
   <img class="cta-mascot" src="icon.jpg" alt="StudyJunkie" />
   <h2>勉強、はじめよう。</h2>
   <p>スマホを開くたびに、少しずつ賢くなる。</p>
-  <div class="cta-coming">🚀 近日App Storeで公開予定</div>
+  <a class="btn-primary" href="https://apps.apple.com/jp/app/studyjunkie/id6758565892" target="_blank" rel="noopener">
+    🍎 App Store で無料DL
+  </a>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-copy">© 2025 KAZUHIRO KAMAKURA. All rights reserved.</div>
+  <div class="footer-copy">© 2026 KAZUHIRO KAMAKURA. All rights reserved.</div>
   <nav class="footer-links">
     <a href="../../privacy.html">プライバシーポリシー</a>
+    <a href="https://forms.gle/tg9Wz3CW9gsPWT4J9" target="_blank" rel="noopener">お問い合わせ</a>
+    <a href="https://apps.apple.com/jp/app/studyjunkie/id6758565892" target="_blank" rel="noopener">App Store</a>
   </nav>
 </footer>
 
