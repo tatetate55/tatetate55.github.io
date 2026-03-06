@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJKPF70PYV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DJKPF70PYV');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StudyJunkie – アプリを開く前にクイズを解こう｜勉強が習慣になる学習アプリ</title>
@@ -465,11 +473,80 @@
     .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 600; transition: color 0.2s; }
     .footer-links a:hover { color: var(--orange); }
 
+    /* ── PHONE SHOWCASE ── */
+    .phone-showcase {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      padding: 20px 5% 80px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .phone-frame {
+      flex-shrink: 0;
+      width: 200px;
+      background: #1c1c1e;
+      border-radius: 34px;
+      padding: 10px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.06);
+      transition: transform 0.3s ease;
+    }
+    .phone-frame:hover { transform: translateY(-8px); }
+
+    .phone-frame.featured {
+      width: 240px;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .phone-frame img {
+      width: 100%;
+      border-radius: 26px;
+      display: block;
+    }
+
+    /* ── CONCEPT PHONE ── */
+    .concept-phone-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 48px;
+    }
+    .concept-phone-wrap .phone-frame {
+      width: 200px;
+      background: #2a2a2e;
+    }
+
+    /* ── GAME VISUAL ── */
+    .game-visual {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 44px;
+    }
+    .game-visual .phone-frame { width: 180px; }
+
     @media (max-width: 640px) {
       .lock-flow { gap: 8px; }
       .flow-arrow { padding: 0 2px; font-size: 1.2rem; }
       .flow-item { min-width: 90px; padding: 14px 12px; }
       footer { justify-content: center; text-align: center; }
+
+      .phone-showcase {
+        gap: 16px;
+        justify-content: flex-start;
+        scroll-snap-type: x mandatory;
+        padding: 10px 5% 60px;
+        scrollbar-width: none;
+      }
+      .phone-showcase::-webkit-scrollbar { display: none; }
+      .phone-frame { width: 180px; scroll-snap-align: center; }
+      .phone-frame.featured { width: 180px; }
+
+      .concept-phone-wrap .phone-frame { width: 170px; }
+
+      .game-visual { gap: 14px; }
+      .game-visual .phone-frame { width: 155px; }
     }
   </style>
 </head>
@@ -543,11 +620,30 @@
   </div>
 </section>
 
+<!-- APP PREVIEW -->
+<section class="phone-showcase">
+  <div class="phone-frame">
+    <img src="screenshots/ss-lock.png" alt="アプリ制限画面 – クイズを解いてロック解除" loading="lazy" />
+  </div>
+  <div class="phone-frame featured">
+    <img src="screenshots/ss-home.png" alt="StudyJunkie ホーム画面 – 学習統計ダッシュボード" loading="lazy" />
+  </div>
+  <div class="phone-frame">
+    <img src="screenshots/ss-quiz-eng.png" alt="英単語クイズ ZONE!モード" loading="lazy" />
+  </div>
+</section>
+
 <!-- CONCEPT -->
 <section class="concept-section">
   <div class="label">Concept</div>
   <h2>スマホ時間を<br><span>自動的に</span>勉強時間へ。</h2>
   <p>意志力に頼らない。アプリを開こうとするその瞬間を、学びのチャンスに変える。</p>
+
+  <div class="concept-phone-wrap">
+    <div class="phone-frame">
+      <img src="screenshots/ss-lock-en.png" alt="App restriction screen – solve quiz to unlock" loading="lazy" />
+    </div>
+  </div>
 
   <div class="concept-cards">
     <div class="concept-card">
@@ -661,6 +757,15 @@
   <div class="section-label label">Gamification</div>
   <h2>ゲームみたいに<br>勉強できる。</h2>
   <p>コンボ・ポイント・ZONEモード。楽しい仕掛けで勉強がやめられなくなる。</p>
+
+  <div class="game-visual">
+    <div class="phone-frame">
+      <img src="screenshots/ss-quiz-eng.png" alt="英単語クイズ – ZONE! COMBO!エフェクト" loading="lazy" />
+    </div>
+    <div class="phone-frame">
+      <img src="screenshots/ss-quiz-math.png" alt="数学クイズ – ZONE! COMBO!エフェクト" loading="lazy" />
+    </div>
+  </div>
 
   <div class="game-cards">
     <div class="game-card">
