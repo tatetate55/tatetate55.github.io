@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJKPF70PYV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DJKPF70PYV');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhotoCleaner – 重複・類似写真をまとめて整理｜端末内で完結する写真クリーナー</title>
+  <meta name="description" content="同じような写真がストレージを圧迫していませんか。重複写真と似た写真を見つけて、残す1枚を自動で選定。解析はすべて端末内で完結し、写真は外部に送信されません。" />
+  <meta name="keywords" content="PhotoCleaner,写真整理,重複写真,類似写真,ストレージ,空き容量,写真削除,クリーナー,連写,iPhone" />
+  <link rel="canonical" href="https://tatetate55.com/app/photocleaner/" />
+  <meta property="og:title" content="PhotoCleaner – 重複・類似写真をまとめて整理" />
+  <meta property="og:description" content="重複写真と似た写真を見つけて、残す1枚を自動で選定。解析はすべて端末内で完結します。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tatetate55.com/app/photocleaner/" />
+  <meta property="og:image" content="https://tatetate55.com/app/photocleaner/icon.png" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PhotoCleaner – 重複・類似写真をまとめて整理" />
+  <meta name="twitter:description" content="重複写真と似た写真を見つけて、残す1枚を自動で選定。解析はすべて端末内で完結します。" />
+  <meta name="twitter:image" content="https://tatetate55.com/app/photocleaner/icon.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PhotoCleaner",
+    "operatingSystem": "iOS 18.0+",
+    "applicationCategory": "UtilitiesApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "description": "重複写真と類似写真を端末内で検出し、残す1枚を自動で選ぶ写真整理アプリ。",
+    "url": "https://tatetate55.com/app/photocleaner/",
+    "author": { "@type": "Person", "name": "tatetate lab" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #eef2f8;
+      --bg2:    #dde6f3;
+      --blue:   #4273ec;
+      --blue2:  #6e9bff;
+      --green:  #16a34a;
+      --red:    #ff3b30;
+      --dark:   #1a1a2e;
+      --text:   #1e2030;
+      --muted:  #6b7280;
+      --card:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      color: var(--text);
+      background: var(--card);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    section { padding: 72px 24px; }
+    .inner { max-width: 960px; margin: 0 auto; }
+
+    /* ---------- ヒーロー ---------- */
+    .hero {
+      background: linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+      text-align: center;
+      padding: 80px 24px 72px;
+    }
+    .hero img.icon {
+      width: 108px; height: 108px; border-radius: 24px;
+      box-shadow: 0 10px 28px rgba(66,115,236,.28);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(1.7rem, 5.5vw, 2.6rem);
+      font-weight: 800; letter-spacing: -.02em; line-height: 1.3;
+      margin-bottom: 16px; color: var(--dark);
+    }
+    .hero p.lead {
+      font-size: 1.05rem; color: #46506a; max-width: 30em; margin: 0 auto 28px;
+    }
+    .badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .badge {
+      background: rgba(255,255,255,.85); border: 1px solid rgba(66,115,236,.22);
+      color: #2f4a86; border-radius: 999px; padding: 7px 16px;
+      font-size: .84rem; font-weight: 700;
+    }
+
+    /* ---------- 特徴 ---------- */
+    h2.title {
+      text-align: center; font-size: 1.5rem; font-weight: 800;
+      color: var(--dark); margin-bottom: 12px; letter-spacing: -.01em;
+    }
+    p.subtitle { text-align: center; color: var(--muted); margin-bottom: 44px; }
+
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px; }
+    .feature {
+      background: var(--card); border: 1px solid #e5eaf3; border-radius: 16px;
+      padding: 26px 24px;
+    }
+    .feature .ico { font-size: 1.9rem; margin-bottom: 12px; display: block; }
+    .feature h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; color: var(--dark); }
+    .feature p { font-size: .94rem; color: #4b5568; }
+
+    /* ---------- スクリーンショット ---------- */
+    .shots { background: linear-gradient(180deg, #f6f8fc 0%, #eef2f8 100%); }
+    .shot-row {
+      display: flex; gap: 20px; overflow-x: auto; padding: 8px 4px 20px;
+      scroll-snap-type: x mandatory;
+    }
+    .shot { flex: 0 0 auto; width: 216px; scroll-snap-align: center; text-align: center; }
+    .shot img {
+      width: 100%; border-radius: 20px; border: 1px solid #dde3ee;
+      box-shadow: 0 8px 24px rgba(26,26,46,.10); display: block;
+    }
+    .shot span { display: block; margin-top: 12px; font-size: .86rem; color: var(--muted); font-weight: 600; }
+
+    /* ---------- 使い方 ---------- */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .step { background: var(--card); border: 1px solid #e5eaf3; border-radius: 16px; padding: 24px; }
+    .step .num {
+      display: inline-grid; place-items: center; width: 34px; height: 34px;
+      border-radius: 50%; background: var(--blue); color: #fff;
+      font-weight: 800; font-size: .95rem; margin-bottom: 12px;
+    }
+    .step h3 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; color: var(--dark); }
+    .step p { font-size: .92rem; color: #4b5568; }
+
+    /* ---------- プライバシー ---------- */
+    .privacy {
+      background: linear-gradient(160deg, #1e2a4a 0%, #14203c 100%); color: #eaf0ff;
+      text-align: center;
+    }
+    .privacy h2 { color: #fff; font-size: 1.5rem; font-weight: 800; margin-bottom: 16px; }
+    .privacy p { max-width: 34em; margin: 0 auto; color: #c3d0ec; }
+
+    /* ---------- 料金 ---------- */
+    .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-top: 8px; }
+    .plan { border: 1px solid #e5eaf3; border-radius: 16px; padding: 24px; text-align: center; background: var(--card); }
+    .plan.rec { border-color: var(--blue); box-shadow: 0 6px 20px rgba(66,115,236,.14); }
+    .plan .tag {
+      display: inline-block; background: var(--blue); color: #fff; font-size: .72rem;
+      font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-bottom: 10px;
+    }
+    .plan h3 { font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+    .plan .price { font-size: 1.6rem; font-weight: 800; color: var(--blue); }
+    .plan p { font-size: .86rem; color: var(--muted); margin-top: 6px; }
+
+    /* ---------- サポート ---------- */
+    .faq { max-width: 760px; margin: 0 auto; }
+    .faq details {
+      border: 1px solid #e5eaf3; border-radius: 14px; padding: 18px 22px;
+      margin-bottom: 12px; background: var(--card);
+    }
+    .faq summary {
+      font-weight: 700; cursor: pointer; color: var(--dark); font-size: .98rem;
+      list-style: none;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::before { content: "Q. "; color: var(--blue); font-weight: 800; }
+    .faq p { margin-top: 12px; font-size: .94rem; color: #4b5568; }
+
+    .contact-box {
+      max-width: 760px; margin: 32px auto 0; text-align: center;
+      background: #f6f8fc; border: 1px solid #e5eaf3; border-radius: 16px; padding: 28px 24px;
+    }
+    .contact-box a.btn {
+      display: inline-block; margin-top: 14px; background: var(--blue); color: #fff;
+      text-decoration: none; font-weight: 800; padding: 13px 30px; border-radius: 999px;
+    }
+
+    /* ---------- フッター ---------- */
+    footer { background: var(--dark); color: #b9c2d6; padding: 40px 24px; text-align: center; }
+    .footer-copy { font-size: .85rem; margin-bottom: 14px; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .footer-links a { color: #b9c2d6; text-decoration: none; font-size: .85rem; }
+    .footer-links a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="icon" src="icon.png" alt="PhotoCleaner アプリアイコン" width="108" height="108" />
+  <h1>同じような写真、<br />たまっていませんか。</h1>
+  <p class="lead">
+    重複した写真とよく似た写真を見つけて、残す 1 枚を自動で選びます。
+    解析はすべて端末の中で完結し、写真が外部に送られることはありません。
+  </p>
+  <div class="badges">
+    <span class="badge">iOS 18.0 以上</span>
+    <span class="badge">端末内で完結</span>
+    <span class="badge">広告なし</span>
+    <span class="badge">30 日間は復元可能</span>
+  </div>
+</section>
+
+<!-- 特徴 -->
+<section>
+  <div class="inner">
+    <h2 class="title">できること</h2>
+    <p class="subtitle">「消していいのか分からない」を減らすための作りにしています。</p>
+    <div class="features">
+      <div class="feature">
+        <span class="ico">🔒</span>
+        <h3>解析はすべて端末の中で</h3>
+        <p>写真そのものが端末の外へ送られることはありません。重複や類似の判定はこの端末で行われ、外部への送信は一切ありません。広告も表示しません。</p>
+      </div>
+      <div class="feature">
+        <span class="ico">⭐️</span>
+        <h3>残す 1 枚は自動で選定</h3>
+        <p>連写や撮り直しのグループから、写りの評価・解像度・ファイルサイズをもとに一番きれいな 1 枚を選び、削除対象から外します。ブレた写真が残ってしまうことがありません。</p>
+      </div>
+      <div class="feature">
+        <span class="ico">👁</span>
+        <h3>見ていない写真は消しません</h3>
+        <p>まとめて削除の対象になるのは、中身がまったく同じ完全重複と、あなたが実際に見比べたグループだけです。すべて任せたい場合は別のボタンを用意しています。</p>
+      </div>
+      <div class="feature">
+        <span class="ico">↩️</span>
+        <h3>消してもやり直せます</h3>
+        <p>削除した写真は iOS の「最近削除した項目」へ移動します。30 日間はいつでも写真アプリから元に戻せます。</p>
+      </div>
+      <div class="feature">
+        <span class="ico">⚡️</span>
+        <h3>2 回目からのスキャンは高速</h3>
+        <p>一度解析した結果を端末内に保存しているため、次回以降のスキャンは大幅に短くなります。</p>
+      </div>
+      <div class="feature">
+        <span class="ico">♿️</span>
+        <h3>文字を大きくしても使えます</h3>
+        <p>ダークモード、さらに大きな文字、色以外での区別、視差効果を減らす設定に対応しています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- スクリーンショット -->
+<section class="shots">
+  <div class="inner">
+    <h2 class="title">画面</h2>
+    <p class="subtitle">スキャンして、見比べて、片付ける。</p>
+    <div class="shot-row">
+      <div class="shot"><img src="screenshots/ss-home.png" alt="削減できる容量を表示するホーム画面" loading="lazy" /><span>どれだけ空くか分かる</span></div>
+      <div class="shot"><img src="screenshots/ss-scanning.png" alt="スキャン中の進捗画面" loading="lazy" /><span>進み具合が見える</span></div>
+      <div class="shot"><img src="screenshots/ss-results.png" alt="検出結果の一覧画面" loading="lazy" /><span>グループごとに整理</span></div>
+      <div class="shot"><img src="screenshots/ss-detail.png" alt="写真を並べて比較する画面" loading="lazy" /><span>並べて見比べる</span></div>
+      <div class="shot"><img src="screenshots/ss-success.png" alt="整理完了画面" loading="lazy" /><span>節約できた容量を表示</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 使い方 -->
+<section>
+  <div class="inner">
+    <h2 class="title">使い方</h2>
+    <p class="subtitle">3 ステップで終わります。</p>
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <h3>スキャンを開始</h3>
+        <p>写真ライブラリへのアクセスを許可すると、重複と類似の検出が始まります。</p>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <h3>見比べて決める</h3>
+        <p>グループを開くと写真が並びます。残したい 1 枚を選び直すこともできます。</p>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <h3>整理する</h3>
+        <p>片付けたグループには印が付き、残りだけが表示されます。上から順に進められます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- プライバシー -->
+<section class="privacy">
+  <div class="inner">
+    <h2>写真は、この端末から出ません。</h2>
+    <p>
+      重複や類似の判定は、すべて iPhone の中で行われます。写真そのものも、その特徴を表すデータも、
+      外部のサーバーへ送信することは一切ありません。アカウント登録も不要で、広告も表示しません。
+    </p>
+  </div>
+</section>
+
+<!-- 料金 -->
+<section>
+  <div class="inner">
+    <h2 class="title">料金</h2>
+    <p class="subtitle">1 グループずつの整理は、通算 3 グループまで無料でお試しいただけます。</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>月額プラン</h3>
+        <div class="price">$3</div>
+        <p>まずは短く試したいとき</p>
+      </div>
+      <div class="plan rec">
+        <span class="tag">おすすめ</span>
+        <h3>年額プラン</h3>
+        <div class="price">$20</div>
+        <p>月額より割安になります</p>
+      </div>
+      <div class="plan">
+        <h3>買い切り</h3>
+        <div class="price">$30</div>
+        <p>以後の支払いはありません</p>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:20px;">
+      Premium にすると、整理の回数制限がなくなり、検出したグループをまとめて削除できるようになります。<br />
+      サブスクリプションは期間終了の 24 時間前までに解約しない限り自動更新されます。解約は iOS の「設定」→ Apple Account →「サブスクリプション」から行えます。
+    </p>
+  </div>
+</section>
+
+<!-- サポート -->
+<section id="support" style="background:#f6f8fc;">
+  <div class="inner">
+    <h2 class="title">よくある質問</h2>
+    <p class="subtitle">お困りのことがあれば、まずこちらをご覧ください。</p>
+    <div class="faq">
+      <details>
+        <summary>削除した写真を元に戻せますか？</summary>
+        <p>戻せます。削除した写真は iOS 標準の「最近削除した項目」へ移動するだけで、その時点では消えていません。写真アプリを開き、「アルバム」→「最近削除した項目」から 30 日以内に復元してください。</p>
+      </details>
+      <details>
+        <summary>「類似写真の検出は利用できません」と表示されます</summary>
+        <p>端末の画像解析エンジンを初期化できなかった場合に表示されます。この状態では誤ったグループ化を避けるため、類似写真の検出を行いません。iPhone を再起動しても改善しない場合はお問い合わせください。なお完全重複の検出は引き続きご利用いただけます。</p>
+      </details>
+      <details>
+        <summary>「ベスト」はどうやって選ばれていますか？</summary>
+        <p>写りの評価（ブレの少なさなど）を最優先に、次いで解像度、ファイルサイズ、撮影日時の順で判断しています。選定結果はいつでも変更でき、メニューの「自動選定をリセット」で元に戻せます。</p>
+      </details>
+      <details>
+        <summary>まとめて削除に含まれないグループがあります</summary>
+        <p>どの写真を残すかは人によって異なるため、まだ中身をご覧になっていない類似写真のグループは、まとめて削除の対象から外しています。詳細画面を開いていただくと対象に加わります。すべてお任せにしたい場合は「全部おまかせで削除」をご利用ください。</p>
+      </details>
+      <details>
+        <summary>購入したのに Premium にならない</summary>
+        <p>課金画面の右上にある「復元」をお試しください。購入時と同じ Apple Account でサインインしている必要があります。それでも反映されない場合はお問い合わせください。</p>
+      </details>
+      <details>
+        <summary>サブスクリプションを解約したい</summary>
+        <p>iOS の「設定」アプリを開き、いちばん上のご自身の名前 →「サブスクリプション」から解約できます。買い切りでご購入の場合、解約の手続きは不要です。</p>
+      </details>
+      <details>
+        <summary>2 回目のスキャンが速いのはなぜ？</summary>
+        <p>一度解析した写真の結果を端末内に保存しているためです。このデータは iOS のキャッシュ領域にあり、空き容量が不足すると自動的に削除されます。削除されても次回のスキャンで作り直されるだけで、問題は起きません。</p>
+      </details>
+    </div>
+
+    <div class="contact-box">
+      <h3 style="font-size:1.05rem;font-weight:800;color:var(--dark);">解決しない場合</h3>
+      <p style="font-size:.94rem;color:#4b5568;margin-top:8px;">
+        不具合のご報告やご要望は、こちらのフォームからお送りください。<br />
+        iPhone の機種と iOS のバージョンを添えていただけると、原因を特定しやすくなります。
+      </p>
+      <a class="btn" href="https://forms.gle/tg9Wz3CW9gsPWT4J9" target="_blank" rel="noopener">お問い合わせフォーム</a>
+    </div>
+  </div>
+</section>
+
+<!-- 他のアプリ -->
+<section style="background:#eef2f8;">
+  <h2 style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:24px;color:#1a1a2e;">他のアプリ</h2>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;max-width:700px;margin:0 auto;">
+    <a href="/app/video-compress/" style="display:flex;align-items:center;gap:12px;background:#fff;padding:16px 20px;border-radius:12px;text-decoration:none;color:#1a1a2e;box-shadow:0 2px 8px rgba(0,0,0,0.06);flex:1;min-width:200px;max-width:320px;">
+      <span style="font-size:2rem;">🎬</span>
+      <div><div style="font-weight:700;">動画圧縮</div><div style="font-size:0.8rem;color:#64748b;">最大90%容量削減</div></div>
+    </a>
+    <a href="/app/studyjunkie/" style="display:flex;align-items:center;gap:12px;background:#fff;padding:16px 20px;border-radius:12px;text-decoration:none;color:#1a1a2e;box-shadow:0 2px 8px rgba(0,0,0,0.06);flex:1;min-width:200px;max-width:320px;">
+      <span style="font-size:2rem;">📚</span>
+      <div><div style="font-weight:700;">StudyJunkie</div><div style="font-size:0.8rem;color:#64748b;">勉強が習慣になる</div></div>
+    </a>
+    <a href="/app/wipecamera/" style="display:flex;align-items:center;gap:12px;background:#fff;padding:16px 20px;border-radius:12px;text-decoration:none;color:#1a1a2e;box-shadow:0 2px 8px rgba(0,0,0,0.06);flex:1;min-width:200px;max-width:320px;">
+      <span style="font-size:2rem;">📹</span>
+      <div><div style="font-weight:700;">ワイプカメラ</div><div style="font-size:0.8rem;color:#64748b;">テレビ風ワイプ動画</div></div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 tatetate lab. All rights reserved.</div>
+  <nav class="footer-links">
+    <a href="/">トップ</a>
+    <a href="../../photocleaner_privacy.html">プライバシーポリシー</a>
+    <a href="https://forms.gle/tg9Wz3CW9gsPWT4J9" target="_blank" rel="noopener">お問い合わせ</a>
+  </nav>
+</footer>
+
+</body>
+</html>
